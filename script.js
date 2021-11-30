@@ -17,16 +17,33 @@ calculatorDisplay.textContent = displayValue;
 //LOGIC
 buttonList.forEach((button, index) => {
   //check what index is, if its within the first bit, add event listener where it updatesDisplay to add on i+1 to displayValue
-  if (index < 9) {
+  if (index < 10) {
     button.addEventListener('click', () => {
       if (displayValue == '0') {
-        displayValue = `${index + 1}`
+        displayValue = `${index}`
         calculatorDisplay.textContent = displayValue;
       }
       else {
-        displayValue += `${index + 1}`;
+        displayValue += `${index}`;
         calculatorDisplay.textContent = displayValue;
       }
+    });
+  }
+  else if (index == 10) {
+    //addition fcn establishment
+    button.addEventListener('click', () => {
+      firstValue = parseInt(displayValue);
+      displayValue = '0';
+      calculatorDisplay.textContent = displayValue;
+      operation = add;
+    });
+  }
+  else if (index == 14) {
+    //execute operate function
+    button.addEventListener('click', () => {
+      secondValue = parseInt(displayValue);
+      displayValue = operate(firstValue, secondValue, operation);
+      calculatorDisplay.textContent = displayValue;
     });
   }
 });
