@@ -38,6 +38,33 @@ buttonList.forEach((button, index) => {
       operation = add;
     });
   }
+  else if (index == 11) {
+    //subtraction fcn establishment
+    button.addEventListener('click', () => {
+      firstValue = parseInt(displayValue);
+      displayValue = '0';
+      calculatorDisplay.textContent = displayValue;
+      operation = subtract;
+    });
+  }
+  else if (index == 12) {
+    //multiplication fcn establishment
+    button.addEventListener('click', () => {
+      firstValue = parseInt(displayValue);
+      displayValue = '0';
+      calculatorDisplay.textContent = displayValue;
+      operation = multiply;
+    });
+  }
+  else if (index == 13) {
+    //division fcn establishment
+    button.addEventListener('click', () => {
+      firstValue = parseInt(displayValue);
+      displayValue = '0';
+      calculatorDisplay.textContent = displayValue;
+      operation = divide;
+    });
+  }
   else if (index == 14) {
     //execute operate function
     button.addEventListener('click', () => {
