@@ -73,6 +73,16 @@ buttonList.forEach((button, index) => {
       calculatorDisplay.textContent = displayValue;
     });
   }
+  else if (index == 15) {
+    //clear out all values of repute
+    button.addEventListener('click', () => {
+      firstValue = 0;
+      operation = 0;
+      secondValue = 0;
+      displayValue = '0';
+      calculatorDisplay.textContent = displayValue;
+    });
+  }
 });
 
 
