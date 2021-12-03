@@ -33,25 +33,25 @@ buttonList.forEach((button, index) => {
   else if (index == 10) {
     //addition fcn establishment
     button.addEventListener('click', () => {
-      executeOperationFromUI(add);
+      executeCalculatorLogic(add);
     });
   }
   else if (index == 11) {
     //subtraction fcn establishment
     button.addEventListener('click', () => {
-      executeOperationFromUI(subtract);
+      executeCalculatorLogic(subtract);
     });
   }
   else if (index == 12) {
     //multiplication fcn establishment
     button.addEventListener('click', () => {
-      executeOperationFromUI(multiply);
+      executeCalculatorLogic(multiply);
     });
   }
   else if (index == 13) {
     //division fcn establishment
     button.addEventListener('click', () => {
-      executeOperationFromUI(divide);
+      executeCalculatorLogic(divide);
     });
   }
   else if (index == 14) {
@@ -101,7 +101,7 @@ function updateDisplay() {
   calculatorDisplay.textContent = displayValue;
 }
 
-function executeOperationFromUI(operationArg) {
+function executeCalculatorLogic(operationArg) {
   firstValue = parseInt(displayValue);
   displayValue = '0';
   updateDisplay();
