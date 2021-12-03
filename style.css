@@ -3,3 +3,31 @@
   padding: 0;
   border: 0;
 }
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.calculator {
+  display: flex;
+  flex-wrap: wrap;
+  width: 320px;
+  justify-content: center;
+  background-color: mistyrose;
+}
+
+.calculatorDisplay {
+  padding: 8px;
+  background-color: steelblue;
+  text-align: center;
+  height: 24px;
+  width: 100%;
+}
+
+button {
+  margin: 16px;
+  padding: 16px;
+}
