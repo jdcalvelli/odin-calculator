@@ -60,7 +60,7 @@ buttonList.forEach((button, index) => {
       //set second value
       secondValue = parseInt(displayValue);
       //display original operation outcome
-      displayValue = operate(firstValue, secondValue, operation);
+      displayValue = Math.round(operate(firstValue, secondValue, operation) * 10000) / 10000;
       updateDisplay();
       //set firstValue equal to result of original operation
       firstValue = parseInt(displayValue);
@@ -119,7 +119,7 @@ function executeCalculatorLogic(operationArg) {
     //set second value
     secondValue = parseInt(displayValue);
     //display original operation outcome
-    displayValue = operate(firstValue, secondValue, operation);
+    displayValue = Math.round(operate(firstValue, secondValue, operation) * 10000) / 10000;
     updateDisplay();
     //set firstValue equal to result of original operation
     firstValue = parseInt(displayValue);
