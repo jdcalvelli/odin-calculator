@@ -1,9 +1,9 @@
 //DECLARATIONS
 let displayValue = '0';
 
-let firstValue;
-let operation;
-let secondValue;
+let firstValue = null;
+let operation = null;
+let secondValue = null;
 
 //UI
 const calculatorDisplay = document.querySelector('.calculatorDisplay');
@@ -20,7 +20,7 @@ buttonList.forEach((button, index) => {
   //check what index is, if its within the first bit, add event listener where it updatesDisplay to add on i+1 to displayValue
   if (index < 10) {
     button.addEventListener('click', () => {
-      if (displayValue == '0') {
+      if (displayValue == '0' || firstValue != null) {
         displayValue = `${index}`
         updateDisplay();
       }
@@ -55,11 +55,19 @@ buttonList.forEach((button, index) => {
     });
   }
   else if (index == 14) {
-    //execute operate function
+    //execute operate function for equals sign
     button.addEventListener('click', () => {
+      //set second value
       secondValue = parseInt(displayValue);
+      //display original operation outcome
       displayValue = operate(firstValue, secondValue, operation);
       updateDisplay();
+      //set firstValue equal to result of original operation
+      firstValue = parseInt(displayValue);
+      //null out second value
+      secondValue = null;
+      //null out operation if you click equals
+      operation = null;
     });
   }
   else if (index == 15) {
@@ -102,8 +110,25 @@ function updateDisplay() {
 }
 
 function executeCalculatorLogic(operationArg) {
-  firstValue = parseInt(displayValue);
-  displayValue = '0';
-  updateDisplay();
-  operation = operationArg;
+  if (firstValue == null) {
+    firstValue = parseInt(displayValue);
+    updateDisplay();
+    operation = operationArg;
+  }
+  else if (firstValue != null && operation != null) {
+    //set second value
+    secondValue = parseInt(displayValue);
+    //display original operation outcome
+    displayValue = operate(firstValue, secondValue, operation);
+    updateDisplay();
+    //set firstValue equal to result of original operation
+    firstValue = parseInt(displayValue);
+    //null out second value
+    secondValue = null;
+    //replace old operation with new operation
+    operation = operationArg;
+  }
+  else if (firstValue != null && operation == null) {
+    operation = operationArg;
+  }
 }
