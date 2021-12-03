@@ -20,7 +20,7 @@ buttonList.forEach((button, index) => {
   //check what index is, if its within the first bit, add event listener where it updatesDisplay to add on i+1 to displayValue
   if (index < 10) {
     button.addEventListener('click', () => {
-      if (displayValue == '0' || firstValue != null) {
+      if (displayValue == '0' || displayValue == 'Error' || firstValue != null) {
         displayValue = `${index}`
         updateDisplay();
       }
@@ -57,17 +57,32 @@ buttonList.forEach((button, index) => {
   else if (index == 14) {
     //execute operate function for equals sign
     button.addEventListener('click', () => {
+
       //set second value
       secondValue = parseInt(displayValue);
-      //display original operation outcome
-      displayValue = Math.round(operate(firstValue, secondValue, operation) * 10000) / 10000;
-      updateDisplay();
-      //set firstValue equal to result of original operation
-      firstValue = parseInt(displayValue);
-      //null out second value
-      secondValue = null;
-      //null out operation if you click equals
-      operation = null;
+
+      //check if we're dividing and second value is 0
+      if (secondValue == 0 && operation == divide) {
+        //display error and null out everything
+        displayValue = 'Error';
+        updateDisplay();
+
+        firstValue = null;
+        operation = null;
+        secondValue = null;
+      }
+      else {
+        //else actually do the thing
+        //display original operation outcome
+        displayValue = Math.round(operate(firstValue, secondValue, operation) * 10000) / 10000;
+        updateDisplay();
+        //set firstValue equal to result of original operation
+        firstValue = parseInt(displayValue);
+        //null out second value
+        secondValue = null;
+        //replace old operation with new operation
+        operation = null;
+      }
     });
   }
   else if (index == 15) {
@@ -118,15 +133,29 @@ function executeCalculatorLogic(operationArg) {
   else if (firstValue != null && operation != null) {
     //set second value
     secondValue = parseInt(displayValue);
-    //display original operation outcome
-    displayValue = Math.round(operate(firstValue, secondValue, operation) * 10000) / 10000;
-    updateDisplay();
-    //set firstValue equal to result of original operation
-    firstValue = parseInt(displayValue);
-    //null out second value
-    secondValue = null;
-    //replace old operation with new operation
-    operation = operationArg;
+
+    //check if we're dividing and second value is 0
+    if (secondValue == 0 && operation == divide) {
+      //display error and null out everything
+      displayValue = 'Error';
+      updateDisplay();
+
+      firstValue = null;
+      operation = null;
+      secondValue = null;
+    }
+    else {
+      //else actually do the thing
+      //display original operation outcome
+      displayValue = Math.round(operate(firstValue, secondValue, operation) * 10000) / 10000;
+      updateDisplay();
+      //set firstValue equal to result of original operation
+      firstValue = parseInt(displayValue);
+      //null out second value
+      secondValue = null;
+      //replace old operation with new operation
+      operation = operationArg;
+    }
   }
   else if (firstValue != null && operation == null) {
     operation = operationArg;
