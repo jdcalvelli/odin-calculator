@@ -12,7 +12,8 @@ const buttonList = document.querySelectorAll('button');
 
 
 //SETUP
-calculatorDisplay.textContent = displayValue;
+//zeroes the display on startup
+updateDisplay();
 
 //LOGIC
 buttonList.forEach((button, index) => {
@@ -21,11 +22,11 @@ buttonList.forEach((button, index) => {
     button.addEventListener('click', () => {
       if (displayValue == '0') {
         displayValue = `${index}`
-        calculatorDisplay.textContent = displayValue;
+        updateDisplay();
       }
       else {
         displayValue += `${index}`;
-        calculatorDisplay.textContent = displayValue;
+        updateDisplay();
       }
     });
   }
@@ -58,17 +59,17 @@ buttonList.forEach((button, index) => {
     button.addEventListener('click', () => {
       secondValue = parseInt(displayValue);
       displayValue = operate(firstValue, secondValue, operation);
-      calculatorDisplay.textContent = displayValue;
+      updateDisplay();
     });
   }
   else if (index == 15) {
     //clear out all values of repute
     button.addEventListener('click', () => {
-      firstValue = 0;
-      operation = 0;
-      secondValue = 0;
+      firstValue = null;
+      operation = null;
+      secondValue = null;
       displayValue = '0';
-      calculatorDisplay.textContent = displayValue;
+      updateDisplay();
     });
   }
 });
@@ -103,6 +104,6 @@ function updateDisplay() {
 function executeOperationFromUI(operationArg) {
   firstValue = parseInt(displayValue);
   displayValue = '0';
-  calculatorDisplay.textContent = displayValue;
+  updateDisplay();
   operation = operationArg;
 }
