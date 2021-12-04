@@ -1,7 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300&display=swap');
+
 * {
   margin: 0;
   padding: 0;
   border: 0;
+
+  color: white;
+  background-color: black;
+
+  font-family: 'Josefin Sans', sans-serif;
 }
 
 .container {
@@ -14,20 +21,54 @@
 .calculator {
   display: flex;
   flex-wrap: wrap;
-  width: 320px;
+  border: 5px solid white;
+  border-radius: 16px;
+  width: 240px;
   justify-content: center;
   background-color: mistyrose;
 }
 
 .calculatorDisplay {
-  padding: 8px;
+  padding: 16px;
+  border-radius: 16px 16px 0 0;
   background-color: steelblue;
-  text-align: center;
-  height: 24px;
+  text-align: right;
+  font-size: 32px;
   width: 100%;
 }
 
 button {
-  margin: 16px;
+  margin: 8px;
   padding: 16px;
+  border-radius: 16px;
+
+  width: 42px;
+  height: 48px;
+
+  font-size: 16px;
+
+  background-color: steelblue;
 }
+
+button:active {
+  transform: scale(0.8);
+}
+
+/* changing the order of the flex items so it looks like a more regular calculator*/
+button:nth-of-type(1) { order:13 }
+button:nth-of-type(2) { order: 9 }
+button:nth-of-type(3) { order: 10 }
+button:nth-of-type(4) { order: 11 }
+button:nth-of-type(5) { order: 5 }
+button:nth-of-type(6) { order: 6 }
+button:nth-of-type(7) { order: 7 }
+button:nth-of-type(8) { order: 1 }
+button:nth-of-type(9) { order: 2 }
+button:nth-of-type(10) { order: 3 }
+button:nth-of-type(11) { order: 4 }
+button:nth-of-type(12) { order: 8 }
+button:nth-of-type(13) { order: 12 }
+button:nth-of-type(14) { order: 16 }
+button:nth-of-type(15) { order: 15 }
+button:nth-of-type(16) { order: 17 }
+button:nth-of-type(17) { order: 14 }
