@@ -59,7 +59,7 @@ buttonList.forEach((button, index) => {
     button.addEventListener('click', () => {
 
       //set second value
-      secondValue = parseInt(displayValue);
+      secondValue = parseFloat(displayValue);
 
       //check if we're dividing and second value is 0
       if (secondValue == 0 && operation == divide) {
@@ -77,7 +77,7 @@ buttonList.forEach((button, index) => {
         displayValue = Math.round(operate(firstValue, secondValue, operation) * 10000) / 10000;
         updateDisplay();
         //set firstValue equal to result of original operation
-        firstValue = parseInt(displayValue);
+        firstValue = parseFloat(displayValue);
         //null out second value
         secondValue = null;
         //replace old operation with new operation
@@ -93,6 +93,28 @@ buttonList.forEach((button, index) => {
       secondValue = null;
       displayValue = '0';
       updateDisplay();
+    });
+  }
+  else if (index == 16) {
+    //add decimal point
+    button.addEventListener('click', () => {
+      // first take displayvalue to array, some to see if theres already a . in it
+      let isDecimalPresent = displayValue.split('').some((element) => {
+        if (element == '.') {
+          return true;
+        }
+      });
+
+      // if decimal is present, break out
+      if (isDecimalPresent) {
+        return;
+      }
+      //if its not present, add it to displayValue
+      else if (!isDecimalPresent) {
+        displayValue += `.`;
+        updateDisplay();
+      }
+
     });
   }
 });
@@ -126,13 +148,13 @@ function updateDisplay() {
 
 function executeCalculatorLogic(operationArg) {
   if (firstValue == null) {
-    firstValue = parseInt(displayValue);
+    firstValue = parseFloat(displayValue);
     updateDisplay();
     operation = operationArg;
   }
   else if (firstValue != null && operation != null) {
     //set second value
-    secondValue = parseInt(displayValue);
+    secondValue = parseFloat(displayValue);
 
     //check if we're dividing and second value is 0
     if (secondValue == 0 && operation == divide) {
@@ -150,7 +172,7 @@ function executeCalculatorLogic(operationArg) {
       displayValue = Math.round(operate(firstValue, secondValue, operation) * 10000) / 10000;
       updateDisplay();
       //set firstValue equal to result of original operation
-      firstValue = parseInt(displayValue);
+      firstValue = parseFloat(displayValue);
       //null out second value
       secondValue = null;
       //replace old operation with new operation
