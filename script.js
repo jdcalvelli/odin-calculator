@@ -117,6 +117,23 @@ buttonList.forEach((button, index) => {
 
     });
   }
+  else if (index == 17) {
+    //backspace button
+    button.addEventListener('click', () => {
+      //so that you cant remove the default zero from the display
+      if (displayValue != '0') {
+        //streing to array methods to handle backspace logic
+        displayValue = displayValue.split('')
+                                   .filter((element, index, array) => {
+                                     if (index != array.length - 1) {
+                                       return true;
+                                     }
+                                   })
+                                   .join('');
+        updateDisplay();
+      }
+    });
+  }
 });
 
 
