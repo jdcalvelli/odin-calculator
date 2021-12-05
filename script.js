@@ -6,7 +6,8 @@ let firstValue = null;
 let operation = null;
 let secondValue = null;
 
-
+//used for displayValue replacement in certain conditions
+let isReplaced = false;
 
 //UI
 
@@ -156,8 +157,18 @@ function updateDisplay() {
 }
 
 function setDisplayValue(numValue) {
-  if (displayValue == '0' || displayValue == 'Error' || firstValue != null) {
+  if (displayValue == '0' || displayValue == 'Error') {
     displayValue = `${numValue}`;
+    updateDisplay();
+  }
+  else if (firstValue != null && !isReplaced) {
+    //first replace display value
+    isReplaced = true;
+    displayValue = `${numValue}`;
+    updateDisplay();
+  }
+  else if (firstValue != null && isReplaced) {
+    displayValue += `${numValue}`;
     updateDisplay();
   }
   else {
@@ -223,7 +234,7 @@ function executeCalculatorLogic(operationArg) {
       secondValue = null;
     }
     else {
-      //else actually do the thing
+      //else actually do the operation
       //display original operation outcome
       displayValue = Math.round(operate(firstValue, secondValue, operation) * 10000) / 10000;
       updateDisplay();
@@ -233,6 +244,8 @@ function executeCalculatorLogic(operationArg) {
       secondValue = null;
       //replace old operation with new operation
       operation = operationArg;
+      // reset isReplaced
+      isReplaced = false;
     }
   }
   else if (firstValue != null && operation == null) {
