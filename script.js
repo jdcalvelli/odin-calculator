@@ -21,7 +21,7 @@ buttonList.forEach((button, index) => {
   if (index < 10) {
     button.addEventListener('click', () => {
       if (displayValue == '0' || displayValue == 'Error' || firstValue != null) {
-        displayValue = `${index}`
+        displayValue = `${index}`;
         updateDisplay();
       }
       else {
@@ -133,6 +133,104 @@ buttonList.forEach((button, index) => {
         updateDisplay();
       }
     });
+  }
+});
+
+//handle keypresses!
+window.addEventListener('keydown', (e) => {
+  //for numbers
+  if (e.key >= 0 && e.key <= 9) {
+    if (displayValue == '0' || displayValue == 'Error' || firstValue != null) {
+      displayValue = `${e.key}`
+      updateDisplay();
+    }
+    else {
+      displayValue += `${e.key}`;
+      updateDisplay();
+    }
+  }
+  // for operations
+  else if (e.key == '+') {
+    executeCalculatorLogic(add);
+  }
+  else if (e.key == '-') {
+    executeCalculatorLogic(subtract);
+  }
+  else if (e.key == '*') {
+    executeCalculatorLogic(multiply);
+  }
+  else if (e.key == '/') {
+    executeCalculatorLogic(divide);
+  }
+  // for equals sign
+  else if (e.key == '=') {
+    //set second value
+    secondValue = parseFloat(displayValue);
+
+    //check if we're dividing and second value is 0
+    if (secondValue == 0 && operation == divide) {
+      //display error and null out everything
+      displayValue = 'Error';
+      updateDisplay();
+
+      firstValue = null;
+      operation = null;
+      secondValue = null;
+    }
+    else {
+      //else actually do the thing
+      //display original operation outcome
+      displayValue = Math.round(operate(firstValue, secondValue, operation) * 10000) / 10000;
+      updateDisplay();
+      //set firstValue equal to result of original operation
+      firstValue = parseFloat(displayValue);
+      //null out second value
+      secondValue = null;
+      //replace old operation with new operation
+      operation = null;
+    }
+  }
+  // for clear
+  else if (e.key == 'c') {
+    firstValue = null;
+    operation = null;
+    secondValue = null;
+    displayValue = '0';
+    updateDisplay();
+  }
+  // for decimal point
+  else if (e.key == '.') {
+    // first take displayvalue to array, some to see if theres already a . in it
+    let isDecimalPresent = displayValue.split('').some((element) => {
+      if (element == '.') {
+        return true;
+      }
+    });
+
+    // if decimal is present, break out
+    if (isDecimalPresent) {
+      return;
+    }
+    //if its not present, add it to displayValue
+    else if (!isDecimalPresent) {
+      displayValue += `.`;
+      updateDisplay();
+    }
+  }
+  //for backspace
+  else if (e.key == 'Backspace') {
+    //so that you cant remove the default zero from the display
+    if (displayValue != '0') {
+      //streing to array methods to handle backspace logic
+      displayValue = displayValue.split('')
+                                 .filter((element, index, array) => {
+                                   if (index != array.length - 1) {
+                                     return true;
+                                   }
+                                 })
+                                 .join('');
+      updateDisplay();
+    }
   }
 });
 
