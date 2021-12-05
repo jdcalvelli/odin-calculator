@@ -1,33 +1,36 @@
 //DECLARATIONS
+
 let displayValue = '0';
 
 let firstValue = null;
 let operation = null;
 let secondValue = null;
 
+
+
 //UI
+
 const calculatorDisplay = document.querySelector('.calculatorDisplay');
 
 const buttonList = document.querySelectorAll('button');
 
 
+
 //SETUP
-//zeroes the display on startup
+
+//set display to default zero
 updateDisplay();
 
+
+
 //LOGIC
+
+//clicking on ui
 buttonList.forEach((button, index) => {
   //check what index is, if its within the first bit, add event listener where it updatesDisplay to add on i+1 to displayValue
   if (index < 10) {
     button.addEventListener('click', () => {
-      if (displayValue == '0' || displayValue == 'Error' || firstValue != null) {
-        displayValue = `${index}`;
-        updateDisplay();
-      }
-      else {
-        displayValue += `${index}`;
-        updateDisplay();
-      }
+      setDisplayValue(index);
     });
   }
   else if (index == 10) {
@@ -57,97 +60,35 @@ buttonList.forEach((button, index) => {
   else if (index == 14) {
     //execute operate function for equals sign
     button.addEventListener('click', () => {
-
-      //set second value
-      secondValue = parseFloat(displayValue);
-
-      //check if we're dividing and second value is 0
-      if (secondValue == 0 && operation == divide) {
-        //display error and null out everything
-        displayValue = 'Error';
-        updateDisplay();
-
-        firstValue = null;
-        operation = null;
-        secondValue = null;
-      }
-      else {
-        //else actually do the thing
-        //display original operation outcome
-        displayValue = Math.round(operate(firstValue, secondValue, operation) * 10000) / 10000;
-        updateDisplay();
-        //set firstValue equal to result of original operation
-        firstValue = parseFloat(displayValue);
-        //null out second value
-        secondValue = null;
-        //replace old operation with new operation
-        operation = null;
-      }
+      executeCalculatorLogic(null);
     });
   }
   else if (index == 15) {
     //clear out all values of repute
     button.addEventListener('click', () => {
-      firstValue = null;
-      operation = null;
-      secondValue = null;
-      displayValue = '0';
+      clearAll();
       updateDisplay();
     });
   }
   else if (index == 16) {
     //add decimal point
     button.addEventListener('click', () => {
-      // first take displayvalue to array, some to see if theres already a . in it
-      let isDecimalPresent = displayValue.split('').some((element) => {
-        if (element == '.') {
-          return true;
-        }
-      });
-
-      // if decimal is present, break out
-      if (isDecimalPresent) {
-        return;
-      }
-      //if its not present, add it to displayValue
-      else if (!isDecimalPresent) {
-        displayValue += `.`;
-        updateDisplay();
-      }
-
+      displayDecimal();
     });
   }
   else if (index == 17) {
     //backspace button
     button.addEventListener('click', () => {
-      //so that you cant remove the default zero from the display
-      if (displayValue != '0') {
-        //streing to array methods to handle backspace logic
-        displayValue = displayValue.split('')
-                                   .filter((element, index, array) => {
-                                     if (index != array.length - 1) {
-                                       return true;
-                                     }
-                                   })
-                                   .join('');
-        updateDisplay();
-      }
+      backspace();
     });
   }
 });
 
-//handle keypresses!
+//handle keypresses instead of clicks
 window.addEventListener('keydown', (e) => {
   //for numbers
   if (e.key >= 0 && e.key <= 9) {
-    if (displayValue == '0' || displayValue == 'Error' || firstValue != null) {
-      displayValue = `${e.key}`
-      updateDisplay();
-    }
-    else {
-      displayValue += `${e.key}`;
-      updateDisplay();
-    }
+    setDisplayValue(e.key);
   }
   // for operations
   else if (e.key == '+') {
@@ -164,79 +105,29 @@ window.addEventListener('keydown', (e) => {
   }
   // for equals sign
   else if (e.key == '=') {
-    //set second value
-    secondValue = parseFloat(displayValue);
-
-    //check if we're dividing and second value is 0
-    if (secondValue == 0 && operation == divide) {
-      //display error and null out everything
-      displayValue = 'Error';
-      updateDisplay();
-
-      firstValue = null;
-      operation = null;
-      secondValue = null;
-    }
-    else {
-      //else actually do the thing
-      //display original operation outcome
-      displayValue = Math.round(operate(firstValue, secondValue, operation) * 10000) / 10000;
-      updateDisplay();
-      //set firstValue equal to result of original operation
-      firstValue = parseFloat(displayValue);
-      //null out second value
-      secondValue = null;
-      //replace old operation with new operation
-      operation = null;
-    }
+    executeCalculatorLogic(null);
   }
   // for clear
   else if (e.key == 'c') {
-    firstValue = null;
-    operation = null;
-    secondValue = null;
-    displayValue = '0';
+    clearAll();
     updateDisplay();
   }
   // for decimal point
   else if (e.key == '.') {
-    // first take displayvalue to array, some to see if theres already a . in it
-    let isDecimalPresent = displayValue.split('').some((element) => {
-      if (element == '.') {
-        return true;
-      }
-    });
-
-    // if decimal is present, break out
-    if (isDecimalPresent) {
-      return;
-    }
-    //if its not present, add it to displayValue
-    else if (!isDecimalPresent) {
-      displayValue += `.`;
-      updateDisplay();
-    }
+    displayDecimal();
   }
   //for backspace
   else if (e.key == 'Backspace') {
-    //so that you cant remove the default zero from the display
-    if (displayValue != '0') {
-      //streing to array methods to handle backspace logic
-      displayValue = displayValue.split('')
-                                 .filter((element, index, array) => {
-                                   if (index != array.length - 1) {
-                                     return true;
-                                   }
-                                 })
-                                 .join('');
-      updateDisplay();
-    }
+    backspace();
   }
 });
 
 
 
 //HELPER FUNCTIONS
+
+//calculator functions
+
 function add(val1, val2) {
   return val1 + val2;
 }
@@ -257,9 +148,59 @@ function operate(operand1, operand2, operation) {
   return operation(operand1, operand2);
 }
 
+
+//ui functions
+
 function updateDisplay() {
   calculatorDisplay.textContent = displayValue;
 }
+
+function setDisplayValue(numValue) {
+  if (displayValue == '0' || displayValue == 'Error' || firstValue != null) {
+    displayValue = `${numValue}`;
+    updateDisplay();
+  }
+  else {
+    displayValue += `${numValue}`;
+    updateDisplay();
+  }
+}
+
+function displayDecimal() {
+  // first take displayvalue to array, some to see if theres already a . in it
+  let isDecimalPresent = displayValue.split('').some((element) => {
+    if (element == '.') {
+      return true;
+    }
+  });
+
+  // if decimal is present, break out
+  if (isDecimalPresent) {
+    return;
+  }
+  //if its not present, add it to displayValue
+  else if (!isDecimalPresent) {
+    displayValue += `.`;
+    updateDisplay();
+  }
+}
+
+function backspace() {
+  //so that you cant remove the default zero from the display
+  if (displayValue != '0') {
+    //streing to array methods to handle backspace logic
+    displayValue = displayValue.split('')
+                               .filter((element, index, array) => {
+                                 if (index != array.length - 1) {
+                                   return true;
+                                 }
+                               })
+                               .join('');
+    updateDisplay();
+  }
+}
+
+// logic functions
 
 function executeCalculatorLogic(operationArg) {
   if (firstValue == null) {
@@ -297,4 +238,11 @@ function executeCalculatorLogic(operationArg) {
   else if (firstValue != null && operation == null) {
     operation = operationArg;
   }
+}
+
+function clearAll() {
+  firstValue = null;
+  operation = null;
+  secondValue = null;
+  displayValue = '0';
 }
